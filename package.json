@@ -1,0 +1,33 @@
+{
+  "name": "mysql-connection-manager",
+  "description": "Manages keep-alive signals, reconnections for a MySQL connection or connection pool.",
+  "version": "0.0.1",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/chill117/mysql-connection-manager"
+  },
+  "author": {
+    "name": "Charles Hill",
+    "email": "chill@degreesofzero.com"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=0.8.0"
+  },
+  "dependencies": {
+    "debug": "1.x",
+    "mysql": "2.x"
+  },
+  "devDependencies": {
+    "mocha": "1.x",
+    "chai": "1.x"
+  },
+  "readmeFilename": "readme.md",
+  "bugs": {
+    "url": "https://github.com/chill117/mysql-connection-manager/issues"
+  }
+}
