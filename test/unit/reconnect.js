@@ -138,10 +138,10 @@ describe('MySQLConnectionManager#reconnect', function() {
 				password: config.password,
 				database: config.database,
 				autoReconnect: true,
-				reconnectDelay: [ 15, 35, 55 ],
+				reconnectDelay: [ 23, 44 ],
 				useConnectionPooling: false,
 				reconnectDelayGroupSize: 3,
-				maxReconnectAttempts: 11
+				maxReconnectAttempts: 7
 			}
 
 			var manager
@@ -162,10 +162,10 @@ describe('MySQLConnectionManager#reconnect', function() {
 
 				var numAttempts = 0, testTime = 0, expectedTestTime = getExpectedTestTime()
 
-				var originalReconnect = manager.reconnect
+				var originalReconnect = manager._reconnect
 
-				// Override the reconnect method.
-				manager.reconnect = function() {
+				// Override the internal reconnect method.
+				manager._reconnect = function() {
 
 					numAttempts++
 
@@ -180,15 +180,43 @@ describe('MySQLConnectionManager#reconnect', function() {
 
 				}
 
-				setTimeout(function() {
+				var intervalCheck = 0, intervalTime = expectedTestTime / 2
 
-					var numAttemptsExpected = options.maxReconnectAttempts
+				setTimeout(checkNumAttempts, intervalTime)
+
+				function checkNumAttempts() {
+
+					intervalCheck++
+
+					var elapsedTime = intervalTime * intervalCheck
+					var numAttemptsExpected = getExpectedNumberOfAttempts(elapsedTime)
 
 					expect(numAttempts).to.equal(numAttemptsExpected)
 
-					done()
+					if (elapsedTime >= expectedTestTime)
+						return done()
 
-				}, expectedTestTime)
+					setTimeout(checkNumAttempts, intervalTime)
+
+				}
+
+				function getExpectedNumberOfAttempts(elapsedTime) {
+
+					var expectedTestTime = 0, expectedNumberOfAttempts = 0
+
+					for (var n = 1; n < options.maxReconnectAttempts; n++)
+					{
+						expectedTestTime += getExpectedDelay(n)
+
+						if (elapsedTime - expectedTestTime < 10)
+							break
+
+						expectedNumberOfAttempts++
+					}
+
+					return expectedNumberOfAttempts
+
+				}
 
 				function getExpectedDelay(attemptNumber) {
 
