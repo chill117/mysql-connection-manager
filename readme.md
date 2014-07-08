@@ -33,12 +33,11 @@ manager.on('connect', function(connection) {
 	// Connected!
 
 })
-```
 
-You can alternatively access the [node-mysql](https://github.com/felixge/node-mysql) connection object directly, like this:
-```js
-var something = new SomeThing(someOptions, manager.connection)
+// Pass the connection object to some other module, like this:
+var something = new SomeThing(someOtherOptions, manager.connection)
 ```
+The connection object is the same as provided by [node-mysql](https://github.com/felixge/node-mysql).
 
 You can also pass an already existing [node-mysql](https://github.com/felixge/node-mysql) connection object to `mysql-connection-manager`, like this:
 ```js
@@ -104,7 +103,7 @@ If the `reconnectDelayGroupSize` was 3:
 
 Any reconnect attempts beyond the last value in the `reconnectDelay` array will simply use the last value from the `reconnectDelay` array.
 
-Alternatively you may simply supply a single integer value to the `reconnectDelay` option to have one delay time between all reconnect attempts, like this:
+Alternatively you may supply a single integer value to the `reconnectDelay` option to have one delay time between all reconnect attempts, like this:
 ```js
 var options = {
 	reconnectDelay: 500
