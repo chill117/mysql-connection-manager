@@ -57,6 +57,31 @@ var manager = new MySQLConnectionManager(options, connection)
 ```
 
 
+### Events
+
+There are a few events that can be listened for on the `manager` object:
+```js
+manager.on('connect', function(connection) {
+
+	// A database connection has been established..
+
+})
+
+manager.on('reconnect', function(connection) {
+
+	// The database connection has been re-established..
+
+})
+
+manager.on('disconnect', function() {
+
+	// The database connection has been lost..
+
+})
+```
+The `manager` object is extended with the [nodejs EventEmitter](http://nodejs.org/api/events.html), so you can use all of the methods that it provides as well: `on`, `off`, `once`, `emit`, etc.
+
+
 ### Options
 
 A list of all available options:
