@@ -64,9 +64,9 @@ A list of all available options:
 var options = {
 	host: 'localhost',// Host name for database connection.
 	port: 3306,// Port number for database connection.
-	user: 'session_test',// Database user.
+	user: 'connect_mng_test',// Database user.
 	password: 'password',// Password for the above database user.
-	database: 'session_test',// Database name.
+	database: 'connect_mng_test',// Database name.
 	autoReconnect: true,// Whether or not to re-establish a database connection after a disconnect.
 	reconnectDelay: [
 		500,// Time between each attempt in the first group of reconnection attempts; milliseconds.
@@ -113,7 +113,7 @@ var options = {
 
 ### Debugging
 
-`mysql-connection-manager` uses the `debug` module to output debug messages to the console. To output all debug messages, run your node app with the `DEBUG` environment variable:
+`mysql-connection-manager` uses the [debug module](https://github.com/visionmedia/debug) to output debug messages to the console. To output all debug messages, run your node app with the `DEBUG` environment variable:
 ```
 DEBUG=mysql-connection-manager* node your-app.js
 ```
@@ -149,6 +149,20 @@ Second, you'll need to install the project dependencies as well as the dev depen
 ```
 npm install
 ```
+
+#### Step 3: Set Up the Test Database
+
+Now, you'll need to set up a local test database:
+```js
+{
+	host: 'localhost',
+	port: 3306,
+	user: 'connect_mng_test',
+	password: 'password',
+	database: 'connect_mng_test'
+}
+```
+*These database credentials are located at `test/config/database.js`*
 
 
 ### Running Tests
