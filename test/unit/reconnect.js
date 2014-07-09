@@ -29,7 +29,7 @@ describe('MySQLConnectionManager#reconnect', function() {
 
 				manager = new MySQLConnectionManager(options)
 
-				manager.on('connect', function(connection) {
+				manager.once('connect', function() {
 
 					done()
 
@@ -93,7 +93,7 @@ describe('MySQLConnectionManager#reconnect', function() {
 
 				manager = new MySQLConnectionManager(options)
 
-				manager.on('connect', function(connection) {
+				manager.once('connect', function() {
 
 					done()
 
@@ -150,7 +150,7 @@ describe('MySQLConnectionManager#reconnect', function() {
 
 				manager = new MySQLConnectionManager(options)
 
-				manager.on('connect', function(connection) {
+				manager.once('connect', function() {
 
 					done()
 
@@ -240,6 +240,71 @@ describe('MySQLConnectionManager#reconnect', function() {
 
 				manager.connection.destroy()
 				manager.connection.emit('error', {code: 'PROTOCOL_CONNECTION_LOST'})
+
+			})
+
+		})
+
+	})
+
+	describe('After a reconnect', function() {
+
+		var options = {
+			host: config.host,
+			port: config.port,
+			user: config.user,
+			password: config.password,
+			database: config.database,
+			autoReconnect: true,
+			reconnectDelay: [ 10, 25 ],
+			useConnectionPooling: false,
+			reconnectDelayGroupSize: 3,
+			maxReconnectAttempts: 15
+		}
+
+		var manager, connection
+
+		beforeEach(function(done) {
+
+			manager = new MySQLConnectionManager(options)
+
+			connection = manager.connection
+
+			manager.once('connect', function() {
+
+				done()
+
+			})
+
+		})
+
+		beforeEach(function(done) {
+
+			manager.once('reconnect', function() {
+
+				done()
+
+			})
+
+			manager.connection.destroy()
+			manager.connection.emit('error', {code: 'PROTOCOL_CONNECTION_LOST'})
+
+		})
+
+		afterEach(function() {
+
+			manager.connection.destroy()
+
+		})
+
+		it('should be able to run a query on the connection object', function(done) {
+
+			connection.query('SHOW TABLES', function(error) {
+
+				if (error)
+					return done(error)
+
+				done()
 
 			})
 

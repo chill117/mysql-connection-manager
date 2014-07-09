@@ -24,7 +24,7 @@ describe('MySQLConnectionManager#', function() {
 
 			manager = new MySQLConnectionManager(options)
 
-			manager.on('connect', function(connection) {
+			manager.once('connect', function() {
 
 				done()
 
@@ -83,7 +83,7 @@ describe('MySQLConnectionManager#', function() {
 
 			manager = new MySQLConnectionManager(options)
 
-			manager.on('connect', function(connection) {
+			manager.once('connect', function() {
 
 				done()
 
@@ -144,7 +144,7 @@ describe('MySQLConnectionManager#', function() {
 
 			manager = new MySQLConnectionManager(options)
 
-			manager.on('connect', function(connection) {
+			manager.once('connect', function() {
 
 				done()
 
