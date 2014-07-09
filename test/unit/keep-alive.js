@@ -34,7 +34,8 @@ describe('MySQLConnectionManager#', function() {
 
 		after(function() {
 
-			manager.connection.destroy()
+			if (manager.connection.state != 'disconnected')
+				manager.connection.destroy()
 
 		})
 
@@ -93,7 +94,8 @@ describe('MySQLConnectionManager#', function() {
 
 		after(function() {
 
-			manager.connection.destroy()
+			if (manager.connection.state != 'disconnected')
+				manager.connection.destroy()
 
 		})
 
@@ -154,7 +156,8 @@ describe('MySQLConnectionManager#', function() {
 
 		after(function() {
 
-			manager.connection.destroy()
+			if (manager.connection.state != 'disconnected')
+				manager.connection.destroy()
 
 		})
 

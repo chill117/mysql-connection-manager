@@ -39,7 +39,8 @@ describe('MySQLConnectionManager#reconnect', function() {
 
 			afterEach(function() {
 
-				manager.connection.destroy()
+				if (manager.connection.state != 'disconnected')
+					manager.connection.destroy()
 
 			})
 
@@ -103,7 +104,8 @@ describe('MySQLConnectionManager#reconnect', function() {
 
 			afterEach(function() {
 
-				manager.connection.destroy()
+				if (manager.connection.state != 'disconnected')
+					manager.connection.destroy()
 
 			})
 
@@ -293,7 +295,8 @@ describe('MySQLConnectionManager#reconnect', function() {
 
 		afterEach(function() {
 
-			manager.connection.destroy()
+			if (manager.connection.state != 'disconnected')
+				manager.connection.destroy()
 
 		})
 
