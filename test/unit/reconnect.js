@@ -4,134 +4,204 @@ var MySQLConnectionManager = require('../..')
 
 var config = require('../config/database')
 
-describe('MySQLConnectionManager#reconnect', function() {
+describe('MySQLConnectionManager#', function() {
 
-	describe('When auto reconnect is disabled', function() {
+	describe('option: \'autoReconnect\'', function() {
 
-		describe('and the MySQL connection has been lost', function() {
+		describe('is set to FALSE', function() {
 
-			var options = {
-				host: config.host,
-				port: config.port,
-				user: config.user,
-				password: config.password,
-				database: config.database,
-				autoReconnect: false,
-				reconnectDelay: [ 10, 25, 50 ],
-				useConnectionPooling: false,
-				reconnectDelayGroupSize: 3,
-				maxReconnectAttempts: 11
-			}
+			describe('and the MySQL connection has been lost', function() {
 
-			var manager
+				var options = {
+					host: config.host,
+					port: config.port,
+					user: config.user,
+					password: config.password,
+					database: config.database,
+					autoReconnect: false,
+					reconnectDelay: [ 10, 25, 50 ],
+					useConnectionPooling: false,
+					reconnectDelayGroupSize: 3,
+					maxReconnectAttempts: 11
+				}
 
-			beforeEach(function(done) {
+				var manager
 
-				manager = new MySQLConnectionManager(options)
+				before(function(done) {
 
-				manager.once('connect', function() {
+					manager = new MySQLConnectionManager(options)
 
-					done()
+					manager.once('connect', function() {
+
+						done()
+
+					})
+
+				})
+
+				after(function() {
+
+					if (manager.connection.state != 'disconnected')
+						manager.connection.destroy()
+
+				})
+
+				it('should not attempt to reconnect', function(done) {
+
+					var numAttempts = 0
+
+					// Override the reconnect method.
+					manager.reconnect = function() {
+
+						numAttempts++
+
+					}
+
+					setTimeout(function() {
+
+						expect(numAttempts).to.equal(0)
+						done()
+
+					}, 45)
+
+					manager.connection.destroy()
+					manager.connection.emit('error', {code: 'PROTOCOL_CONNECTION_LOST'})
 
 				})
 
 			})
 
-			afterEach(function() {
-
-				if (manager.connection.state != 'disconnected')
-					manager.connection.destroy()
-
-			})
-
-			it('should not attempt to reconnect', function(done) {
-
-				var numAttempts = 0
-
-				// Override the reconnect method.
-				manager.reconnect = function() {
-
-					numAttempts++
-
-				}
-
-				setTimeout(function() {
-
-					expect(numAttempts).to.equal(0)
-					done()
-
-				}, 45)
-
-				manager.connection.destroy()
-				manager.connection.emit('error', {code: 'PROTOCOL_CONNECTION_LOST'})
-
-			})
-
 		})
 
-	})
+		describe('is set to TRUE', function() {
 
-	describe('When auto reconnect is enabled', function() {
+			describe('and the MySQL connection has NOT been lost', function() {
 
-		describe('and the MySQL connection has NOT been lost', function() {
+				var options = {
+					host: config.host,
+					port: config.port,
+					user: config.user,
+					password: config.password,
+					database: config.database,
+					autoReconnect: true,
+					reconnectDelay: [ 10, 25, 50 ],
+					useConnectionPooling: false,
+					reconnectDelayGroupSize: 3,
+					maxReconnectAttempts: 11
+				}
 
-			var options = {
-				host: config.host,
-				port: config.port,
-				user: config.user,
-				password: config.password,
-				database: config.database,
-				autoReconnect: true,
-				reconnectDelay: [ 10, 25, 50 ],
-				useConnectionPooling: false,
-				reconnectDelayGroupSize: 3,
-				maxReconnectAttempts: 11
-			}
+				var manager
 
-			var manager
+				before(function(done) {
 
-			beforeEach(function(done) {
+					manager = new MySQLConnectionManager(options)
 
-				manager = new MySQLConnectionManager(options)
+					manager.once('connect', function() {
 
-				manager.once('connect', function() {
+						done()
 
-					done()
+					})
+
+				})
+
+				after(function() {
+
+					if (manager.connection.state != 'disconnected')
+						manager.connection.destroy()
+
+				})
+
+				it('should not attempt to reconnect', function(done) {
+
+					var numAttempts = 0
+
+					// Override the reconnect method.
+					manager.reconnect = function() {
+
+						numAttempts++
+
+					}
+
+					setTimeout(function() {
+
+						expect(numAttempts).to.equal(0)
+						done()
+
+					}, 45)
 
 				})
 
 			})
 
-			afterEach(function() {
+			describe('and the MySQL connection has been lost', function() {
 
-				if (manager.connection.state != 'disconnected')
-					manager.connection.destroy()
-
-			})
-
-			it('should not attempt to reconnect', function(done) {
-
-				var numAttempts = 0
-
-				// Override the reconnect method.
-				manager.reconnect = function() {
-
-					numAttempts++
-
+				var options = {
+					host: config.host,
+					port: config.port,
+					user: config.user,
+					password: config.password,
+					database: config.database,
+					autoReconnect: true,
+					reconnectDelay: [ 15, 25 ],
+					useConnectionPooling: false,
+					reconnectDelayGroupSize: 3,
+					maxReconnectAttempts: 7
 				}
 
-				setTimeout(function() {
+				var manager
 
-					expect(numAttempts).to.equal(0)
-					done()
+				before(function(done) {
 
-				}, 45)
+					manager = new MySQLConnectionManager(options)
+
+					manager.once('connect', function() {
+
+						done()
+
+					})
+
+				})
+
+				after(function() {
+
+					if (manager.connection.state != 'disconnected')
+						manager.connection.destroy()
+
+				})
+
+				it('should attempt to reconnect', function(done) {
+
+					var timeout, called = false
+
+					// Override the reconnect method.
+					manager.reconnect = function() {
+
+						clearTimeout(timeout)
+
+						if (!called)
+						{
+							called = true
+							done()
+						}
+
+					}
+
+					timeout = setTimeout(function() {
+
+						done(new Error('Expected at least one reconnection attempt.'))
+
+					}, 80)
+
+					manager.connection.destroy()
+					manager.connection.emit('error', {code: 'PROTOCOL_CONNECTION_LOST'})
+
+				})
 
 			})
 
 		})
 
-		describe('and the MySQL connection has been lost', function() {
+		describe('options: \'reconnectDelay\', \'reconnectDelayGroupSize\'', function() {
 
 			var options = {
 				host: config.host,
@@ -148,7 +218,7 @@ describe('MySQLConnectionManager#reconnect', function() {
 
 			var manager
 
-			beforeEach(function(done) {
+			before(function(done) {
 
 				manager = new MySQLConnectionManager(options)
 
@@ -157,6 +227,13 @@ describe('MySQLConnectionManager#reconnect', function() {
 					done()
 
 				})
+
+			})
+
+			after(function() {
+
+				if (manager.connection.state != 'disconnected')
+					manager.connection.destroy()
 
 			})
 
