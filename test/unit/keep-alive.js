@@ -1,5 +1,3 @@
-var chai = require('chai')
-var expect = chai.expect
 var MySQLConnectionManager = require('../..')
 
 var config = require('../config/database')
@@ -43,21 +41,17 @@ describe('MySQLConnectionManager#', function() {
 
 			it('should not send keep-alive signals', function(done) {
 
-				var numCalls = 0
+				var timeout
 
 				// Override the keepAlive method.
 				manager.keepAlive = function() {
 
-					numCalls++
+					clearTimeout(timeout)
+					done(new Error('Expected keep-alive signal to NOT have been sent.'))
 
 				}
 
-				setTimeout(function() {
-
-					expect(numCalls).to.equal(0)
-					done()
-
-				}, 55)
+				timeout = setTimeout(done, 50)
 
 			})
 
@@ -175,7 +169,8 @@ describe('MySQLConnectionManager#', function() {
 
 				var numCallsExpected = Math.floor(testTime / intervalTime)
 
-				expect(numCalls).to.equal(numCallsExpected)
+				if (numCalls != numCallsExpected)
+					return done(new Error('Expected exactly ' + numCallsExpected + ' keep-alive signals to be sent.'))
 
 				done()
 
@@ -231,13 +226,14 @@ describe('MySQLConnectionManager#', function() {
 
 			manager.setKeepAliveInterval(intervalTime)
 
-			var testTime = (intervalTime * 5) + 10
+			var testTime = (intervalTime * 5) + 30
 
 			setTimeout(function() {
 
 				var numCallsExpected = Math.floor(testTime / intervalTime)
 
-				expect(numCalls).to.equal(numCallsExpected)
+				if (numCalls != numCallsExpected)
+					return done(new Error('Expected exactly ' + numCallsExpected + ' keep-alive signals to be sent.'))
 
 				done()
 
@@ -354,21 +350,17 @@ describe('MySQLConnectionManager#', function() {
 
 			it('should not send keep-alive signals', function(done) {
 
-				var numCalls = 0
+				var timeout
 
 				// Override the keepAlive method.
 				manager.keepAlive = function() {
 
-					numCalls++
+					clearTimeout(timeout)
+					done(new Error('Expected keep-alive signal to NOT have been sent.'))
 
 				}
 
-				setTimeout(function() {
-
-					expect(numCalls).to.equal(0)
-					done()
-
-				}, 55)
+				timeout = setTimeout(done, 50)
 				
 			})
 

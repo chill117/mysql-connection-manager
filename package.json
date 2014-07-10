@@ -23,8 +23,7 @@
     "mysql": "2.x"
   },
   "devDependencies": {
-    "mocha": "1.x",
-    "chai": "1.x"
+    "mocha": "1.x"
   },
   "readmeFilename": "readme.md",
   "bugs": {

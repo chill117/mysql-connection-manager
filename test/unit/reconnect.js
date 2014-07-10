@@ -1,5 +1,3 @@
-var chai = require('chai')
-var expect = chai.expect
 var MySQLConnectionManager = require('../..')
 
 var config = require('../config/database')
@@ -48,21 +46,17 @@ describe('MySQLConnectionManager#', function() {
 
 				it('should not attempt to reconnect', function(done) {
 
-					var numAttempts = 0
+					var timeout
 
 					// Override the reconnect method.
 					manager.reconnect = function() {
 
-						numAttempts++
+						clearTimeout(timeout)
+						done(new Error('Expected no reconnection attempts.'))
 
 					}
 
-					setTimeout(function() {
-
-						expect(numAttempts).to.equal(0)
-						done()
-
-					}, 45)
+					timeout = setTimeout(done, 50)
 
 					manager.connection.destroy()
 					manager.connection.emit('error', {code: 'PROTOCOL_CONNECTION_LOST'})
@@ -113,21 +107,17 @@ describe('MySQLConnectionManager#', function() {
 
 				it('should not attempt to reconnect', function(done) {
 
-					var numAttempts = 0
+					var timeout
 
 					// Override the reconnect method.
 					manager.reconnect = function() {
 
-						numAttempts++
+						clearTimeout(timeout)
+						done(new Error('Expected no reconnection attempts.'))
 
 					}
 
-					setTimeout(function() {
-
-						expect(numAttempts).to.equal(0)
-						done()
-
-					}, 45)
+					timeout = setTimeout(done, 50)
 
 				})
 
@@ -270,7 +260,8 @@ describe('MySQLConnectionManager#', function() {
 					var elapsedTime = intervalTime * intervalCheck
 					var numAttemptsExpected = getExpectedNumberOfAttempts(elapsedTime)
 
-					expect(numAttempts).to.equal(numAttemptsExpected)
+					if (numAttempts != numAttemptsExpected)
+						return done(new Error('Expected exactly ' + numAttemptsExpected + ' reconnection attempts.'))
 
 					if (elapsedTime >= expectedTestTime)
 						return done()
