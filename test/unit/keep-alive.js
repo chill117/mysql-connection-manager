@@ -134,7 +134,7 @@ describe('MySQLConnectionManager#', function() {
 			password: config.password,
 			database: config.database,
 			keepAlive: true,
-			keepAliveInterval: 18
+			keepAliveInterval: 26
 		}
 
 		var manager
@@ -169,7 +169,7 @@ describe('MySQLConnectionManager#', function() {
 
 			}
 
-			var testTime = (intervalTime * 5) + 10
+			var testTime = (intervalTime * 5) + 30
 
 			setTimeout(function() {
 
@@ -194,7 +194,7 @@ describe('MySQLConnectionManager#', function() {
 			password: config.password,
 			database: config.database,
 			keepAlive: true,
-			keepAliveInterval: 36
+			keepAliveInterval: 40
 		}
 
 		var manager
