@@ -136,6 +136,11 @@ var options = {
 ```
 
 
+### Connection Pooling
+
+When `useConnectionPooling` is set to `TRUE`, the `manager.connection` object is a connection pool object returned by `mysql.createPool`; see [node-mysql](https://github.com/felixge/node-mysql#pooling-connections) for details.
+
+
 ### Debugging
 
 `mysql-connection-manager` uses the [debug module](https://github.com/visionmedia/debug) to output debug messages to the console. To output all debug messages, run your node app with the `DEBUG` environment variable:
