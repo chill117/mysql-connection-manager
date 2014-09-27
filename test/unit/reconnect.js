@@ -231,10 +231,10 @@ describe('MySQLConnectionManager#', function() {
 
 				var numAttempts = 0, testTime = 0, expectedTestTime = getExpectedTestTime()
 
-				var originalReconnect = manager._reconnect
+				var originalReconnect = manager.reconnect
 
 				// Override the internal reconnect method.
-				manager._reconnect = function() {
+				manager.reconnect = function() {
 
 					numAttempts++
 
