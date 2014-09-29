@@ -11,7 +11,8 @@ describe('MySQLConnectionManager#isConnected()', function() {
 			port: config.port,
 			user: config.user,
 			password: config.password,
-			database: config.database
+			database: config.database,
+			keepAlive: false
 		}
 
 		var manager
@@ -25,13 +26,6 @@ describe('MySQLConnectionManager#isConnected()', function() {
 				done()
 
 			})
-
-		})
-
-		after(function() {
-
-			if (manager.connection.state != 'disconnected')
-				manager.connection.destroy()
 
 		})
 
@@ -53,7 +47,8 @@ describe('MySQLConnectionManager#isConnected()', function() {
 			port: config.port,
 			user: config.user,
 			password: config.password,
-			database: config.database
+			database: config.database,
+			keepAlive: false
 		}
 
 		var manager
@@ -79,13 +74,6 @@ describe('MySQLConnectionManager#isConnected()', function() {
 
 		})
 
-		after(function() {
-
-			if (manager.connection.state != 'disconnected')
-				manager.connection.destroy()
-
-		})
-
 		it('should return FALSE', function(done) {
 
 			if (manager.isConnected())
@@ -106,7 +94,8 @@ describe('MySQLConnectionManager#isConnected()', function() {
 			password: config.password,
 			database: config.database,
 			autoReconnect: true,
-			reconnectDelay: 25
+			reconnectDelay: 25,
+			keepAlive: false
 		}
 
 		var manager
@@ -133,13 +122,6 @@ describe('MySQLConnectionManager#isConnected()', function() {
 
 			manager.connection.destroy()
 			manager.connection.emit('error', {code: 'PROTOCOL_CONNECTION_LOST'})
-
-		})
-
-		after(function() {
-
-			if (manager.connection.state != 'disconnected')
-				manager.connection.destroy()
 
 		})
 

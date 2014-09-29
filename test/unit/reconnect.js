@@ -37,13 +37,6 @@ describe('MySQLConnectionManager#', function() {
 
 				})
 
-				after(function() {
-
-					if (manager.connection.state != 'disconnected')
-						manager.connection.destroy()
-
-				})
-
 				it('should not attempt to reconnect', function(done) {
 
 					var timeout
@@ -98,13 +91,6 @@ describe('MySQLConnectionManager#', function() {
 
 				})
 
-				after(function() {
-
-					if (manager.connection.state != 'disconnected')
-						manager.connection.destroy()
-
-				})
-
 				it('should not attempt to reconnect', function(done) {
 
 					var timeout
@@ -149,13 +135,6 @@ describe('MySQLConnectionManager#', function() {
 						done()
 
 					})
-
-				})
-
-				after(function() {
-
-					if (manager.connection.state != 'disconnected')
-						manager.connection.destroy()
 
 				})
 
@@ -217,13 +196,6 @@ describe('MySQLConnectionManager#', function() {
 					done()
 
 				})
-
-			})
-
-			after(function() {
-
-				if (manager.connection.state != 'disconnected')
-					manager.connection.destroy()
 
 			})
 
@@ -358,13 +330,6 @@ describe('MySQLConnectionManager#', function() {
 
 			manager.connection.destroy()
 			manager.connection.emit('error', {code: 'PROTOCOL_CONNECTION_LOST'})
-
-		})
-
-		afterEach(function() {
-
-			if (manager.connection.state != 'disconnected')
-				manager.connection.destroy()
 
 		})
 

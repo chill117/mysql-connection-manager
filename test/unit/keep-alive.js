@@ -32,13 +32,6 @@ describe('MySQLConnectionManager#', function() {
 
 			})
 
-			after(function() {
-
-				if (manager.connection.state != 'disconnected')
-					manager.connection.destroy()
-
-			})
-
 			it('should not send keep-alive signals', function(done) {
 
 				var timeout
@@ -80,13 +73,6 @@ describe('MySQLConnectionManager#', function() {
 					done()
 
 				})
-
-			})
-
-			after(function() {
-
-				if (manager.connection.state != 'disconnected')
-					manager.connection.destroy()
 
 			})
 
@@ -145,13 +131,6 @@ describe('MySQLConnectionManager#', function() {
 
 		})
 
-		after(function() {
-
-			if (manager.connection.state != 'disconnected')
-				manager.connection.destroy()
-
-		})
-
 		it('should correctly set the keep-alive interval time', function(done) {
 
 			var numCalls = 0, intervalTime = options.keepAliveInterval
@@ -203,13 +182,6 @@ describe('MySQLConnectionManager#', function() {
 				done()
 
 			})
-
-		})
-
-		after(function() {
-
-			if (manager.connection.state != 'disconnected')
-				manager.connection.destroy()
 
 		})
 
@@ -266,13 +238,6 @@ describe('MySQLConnectionManager#', function() {
 				done()
 
 			})
-
-		})
-
-		after(function() {
-
-			if (manager.connection.state != 'disconnected')
-				manager.connection.destroy()
 
 		})
 
@@ -341,13 +306,6 @@ describe('MySQLConnectionManager#', function() {
 
 			})
 
-			after(function() {
-
-				if (manager.connection.state != 'disconnected')
-					manager.connection.destroy()
-
-			})
-
 			it('should not send keep-alive signals', function(done) {
 
 				var timeout
@@ -407,13 +365,6 @@ describe('MySQLConnectionManager#', function() {
 
 				manager.connection.destroy()
 				manager.connection.emit('error', {code: 'PROTOCOL_CONNECTION_LOST'})
-
-			})
-
-			after(function() {
-
-				if (manager.connection.state != 'disconnected')
-					manager.connection.destroy()
 
 			})
 
