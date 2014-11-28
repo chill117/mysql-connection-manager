@@ -19,8 +19,8 @@
     "node": ">=0.8.0"
   },
   "dependencies": {
-    "debug": "1.x",
-    "mysql": "2.x"
+    "debug": "2.1.0",
+    "mysql": "2.5.3"
   },
   "devDependencies": {
     "mocha": "1.x"
