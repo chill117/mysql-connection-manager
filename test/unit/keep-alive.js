@@ -114,7 +114,7 @@ describe('MySQLConnectionManager#', function() {
 			password: config.password,
 			database: config.database,
 			keepAlive: true,
-			keepAliveInterval: 25
+			keepAliveInterval: 77
 		}
 
 		var manager
@@ -133,27 +133,24 @@ describe('MySQLConnectionManager#', function() {
 
 		it('should correctly set the keep-alive interval time', function(done) {
 
-			var numCalls = 0, intervalTime = options.keepAliveInterval
+			var hasBeenCalled = false,
+				intervalTime = options.keepAliveInterval
 
 			// Override the keepAlive method.
 			manager.keepAlive = function() {
 
-				numCalls++
+				hasBeenCalled = true
 
 			}
 
-			var testTime = (intervalTime * 5) + 15
-
 			setTimeout(function() {
 
-				var numCallsExpected = Math.floor(testTime / intervalTime)
-
-				if (numCalls != numCallsExpected)
-					return done(new Error('Expected exactly ' + numCallsExpected + ' keep-alive signals to be sent.'))
+				if (!hasBeenCalled)
+					return done(new Error('Expected keepAlive method to have been called.'))
 
 				done()
 
-			}, testTime)
+			}, intervalTime * 2)
 
 		})
 
@@ -168,7 +165,7 @@ describe('MySQLConnectionManager#', function() {
 			password: config.password,
 			database: config.database,
 			keepAlive: true,
-			keepAliveInterval: 40
+			keepAliveInterval: 150
 		}
 
 		var manager
@@ -187,29 +184,26 @@ describe('MySQLConnectionManager#', function() {
 
 		it('should correctly set the keep-alive interval time', function(done) {
 
-			var numCalls = 0, intervalTime = 24
+			var hasBeenCalled = false,
+				intervalTime = 77
 
 			// Override the keepAlive method.
 			manager.keepAlive = function() {
 
-				numCalls++
+				hasBeenCalled = true
 
 			}
 
 			manager.setKeepAliveInterval(intervalTime)
 
-			var testTime = (intervalTime * 5) + 30
-
 			setTimeout(function() {
 
-				var numCallsExpected = Math.floor(testTime / intervalTime)
-
-				if (numCalls != numCallsExpected)
-					return done(new Error('Expected exactly ' + numCallsExpected + ' keep-alive signals to be sent.'))
+				if (!hasBeenCalled)
+					return done(new Error('Expected keepAlive method to have been called.'))
 
 				done()
 
-			}, testTime)
+			}, intervalTime * 2)
 
 		})
 
