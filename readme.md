@@ -152,7 +152,7 @@ When `useConnectionPooling` is set to `TRUE`, the `manager.connection` object is
 
 `mysql-connection-manager` uses the [debug module](https://github.com/visionmedia/debug) to output debug messages to the console. To output all debug messages, run your node app with the `DEBUG` environment variable:
 ```
-DEBUG=mysql-connection-manager* node your-app.js
+DEBUG=mysql-connection-manager node your-app.js
 ```
 This will output log messages as well as error messages from `mysql-connection-manager`.
 
