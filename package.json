@@ -19,11 +19,11 @@
     "node": ">=0.10.0"
   },
   "dependencies": {
-    "debug": "2.1.0",
-    "mysql": "2.5.3"
+    "debug": "2.2.0",
+    "mysql": "2.7.0"
   },
   "devDependencies": {
-    "mocha": "1.x"
+    "mocha": "2.2.5"
   },
   "readmeFilename": "readme.md",
   "bugs": {
