@@ -1,6 +1,6 @@
 # mysql-connection-manager
 
-[![Build Status](https://travis-ci.org/chill117/mysql-connection-manager.svg?branch=master)](https://travis-ci.org/chill117/mysql-connection-manager)
+[![Build Status](https://travis-ci.org/chill117/mysql-connection-manager.svg?branch=master)](https://travis-ci.org/chill117/mysql-connection-manager) [![Status of Dependencies](https://david-dm.org/chill117/mysql-connection-manager.svg)](https://david-dm.org/chill117/mysql-connection-manager)
 
 Manages keep-alive signals, reconnections for a MySQL connection or connection pool.
 
