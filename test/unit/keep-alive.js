@@ -1,6 +1,6 @@
-var MySQLConnectionManager = require('../..')
+var MySQLConnectionManager = require('../..');
 
-var config = require('../config/database')
+var config = require('../config/database');
 
 describe('MySQLConnectionManager#', function() {
 
@@ -16,39 +16,34 @@ describe('MySQLConnectionManager#', function() {
 				database: config.database,
 				keepAlive: false,
 				keepAliveInterval: 15
-			}
+			};
 
-			var manager
+			var manager;
 
 			before(function(done) {
 
-				manager = new MySQLConnectionManager(options)
+				manager = new MySQLConnectionManager(options);
 
 				manager.once('connect', function() {
 
-					done()
-
-				})
-
-			})
+					done();
+				});
+			});
 
 			it('should not send keep-alive signals', function(done) {
 
-				var timeout
+				var timeout;
 
 				// Override the keepAlive method.
 				manager.keepAlive = function() {
 
-					clearTimeout(timeout)
-					done(new Error('Expected keep-alive signal to NOT have been sent.'))
+					clearTimeout(timeout);
+					done(new Error('Expected keep-alive signal to NOT have been sent.'));
+				};
 
-				}
-
-				timeout = setTimeout(done, 50)
-
-			})
-
-		})
+				timeout = setTimeout(done, 50);
+			});
+		});
 
 		describe('when set to TRUE', function() {
 
@@ -60,50 +55,44 @@ describe('MySQLConnectionManager#', function() {
 				database: config.database,
 				keepAlive: true,
 				keepAliveInterval: 15
-			}
+			};
 
-			var manager
+			var manager;
 
 			before(function(done) {
 
-				manager = new MySQLConnectionManager(options)
+				manager = new MySQLConnectionManager(options);
 
 				manager.once('connect', function() {
 
-					done()
-
-				})
-
-			})
+					done();
+				});
+			});
 
 			it('should send keep-alive signals', function(done) {
 
-				var timeout, called = false
+				var timeout;
+				var called = false;
 
 				// Override the keepAlive method.
 				manager.keepAlive = function() {
 
-					clearTimeout(timeout)
+					clearTimeout(timeout);
 
-					if (!called)
-					{
-						called = true
-						done()
+					if (!called) {
+						called = true;
+						done();
 					}
-
-				}
+				};
 
 				timeout = setTimeout(function() {
 
-					done(new Error('Expected at least one keep-alive signal to have been sent.'))
+					done(new Error('Expected at least one keep-alive signal to have been sent.'));
 
-				}, 60)
-
-			})
-			
-		})
-
-	})
+				}, 60);
+			});
+		});
+	});
 
 	describe('option: \'keepAliveInterval\'', function() {
 
@@ -115,46 +104,42 @@ describe('MySQLConnectionManager#', function() {
 			database: config.database,
 			keepAlive: true,
 			keepAliveInterval: 77
-		}
+		};
 
-		var manager
+		var manager;
 
 		before(function(done) {
 
-			manager = new MySQLConnectionManager(options)
+			manager = new MySQLConnectionManager(options);
 
 			manager.once('connect', function() {
 
-				done()
-
-			})
-
-		})
+				done();
+			});
+		});
 
 		it('should correctly set the keep-alive interval time', function(done) {
 
-			var hasBeenCalled = false,
-				intervalTime = options.keepAliveInterval
+			var hasBeenCalled = false;
+			var intervalTime = options.keepAliveInterval;
 
 			// Override the keepAlive method.
 			manager.keepAlive = function() {
 
-				hasBeenCalled = true
-
-			}
+				hasBeenCalled = true;
+			};
 
 			setTimeout(function() {
 
-				if (!hasBeenCalled)
-					return done(new Error('Expected keepAlive method to have been called.'))
+				if (!hasBeenCalled) {
+					return done(new Error('Expected keepAlive method to have been called.'));
+				}
 
-				done()
+				done();
 
-			}, intervalTime * 2)
-
-		})
-
-	})
+			}, intervalTime * 2);
+		});
+	});
 
 	describe('setKeepAliveInterval(interval)', function() {
 
@@ -166,48 +151,44 @@ describe('MySQLConnectionManager#', function() {
 			database: config.database,
 			keepAlive: true,
 			keepAliveInterval: 150
-		}
+		};
 
-		var manager
+		var manager;
 
 		before(function(done) {
 
-			manager = new MySQLConnectionManager(options)
+			manager = new MySQLConnectionManager(options);
 
 			manager.once('connect', function() {
 
-				done()
-
-			})
-
-		})
+				done();
+			});
+		});
 
 		it('should correctly set the keep-alive interval time', function(done) {
 
-			var hasBeenCalled = false,
-				intervalTime = 77
+			var hasBeenCalled = false;
+			var intervalTime = 77;
 
 			// Override the keepAlive method.
 			manager.keepAlive = function() {
 
-				hasBeenCalled = true
+				hasBeenCalled = true;
+			};
 
-			}
-
-			manager.setKeepAliveInterval(intervalTime)
+			manager.setKeepAliveInterval(intervalTime);
 
 			setTimeout(function() {
 
-				if (!hasBeenCalled)
-					return done(new Error('Expected keepAlive method to have been called.'))
+				if (!hasBeenCalled) {
+					return done(new Error('Expected keepAlive method to have been called.'));
+				}
 
-				done()
+				done();
 
-			}, intervalTime * 2)
-
-		})
-
-	})
+			}, intervalTime * 2);
+		});
+	});
 
 	describe('keepAlive()', function() {
 
@@ -219,40 +200,37 @@ describe('MySQLConnectionManager#', function() {
 			database: config.database,
 			keepAlive: true,
 			keepAliveInterval: 30000
-		}
+		};
 
-		var manager
+		var manager;
 
 		before(function(done) {
 
-			manager = new MySQLConnectionManager(options)
+			manager = new MySQLConnectionManager(options);
 
 			manager.once('connect', function() {
 
-				done()
-
-			})
-
-		})
+				done();
+			});
+		});
 
 		it('should be able to send a keep-alive signal', function(done) {
 
 			try {
 
-				manager.keepAlive()
+				manager.keepAlive();
 
 			} catch (error) {
 
-				if (error)
-					return done(new Error(error))
-
+				if (error) {
+					return done(new Error(error));
+				}
 			}
 
-			done()
+			done();
+		});
 
-		})
-
-	})
+	});
 
 	describe('keep-alive', function() {
 
@@ -271,52 +249,45 @@ describe('MySQLConnectionManager#', function() {
 				maxReconnectAttempts: 5,
 				keepAlive: true,
 				keepAliveInterval: 15
-			}
+			};
 
-			var manager
+			var manager;
 
 			before(function(done) {
 
-				manager = new MySQLConnectionManager(options)
+				manager = new MySQLConnectionManager(options);
 
 				manager.once('connect', function() {
 
-					done()
-
-				})
-
-			})
+					done();
+				});
+			});
 
 			before(function(done) {
 
 				manager.once('disconnect', function() {
 
-					done()
+					done();
+				});
 
-				})
-
-				manager.connection.destroy()
-				manager.connection.emit('error', {code: 'PROTOCOL_CONNECTION_LOST'})
-
-			})
+				manager.connection.destroy();
+				manager.connection.emit('error', { code: 'PROTOCOL_CONNECTION_LOST' });
+			});
 
 			it('should not send keep-alive signals', function(done) {
 
-				var timeout
+				var timeout;
 
 				// Override the keepAlive method.
 				manager.keepAlive = function() {
 
-					clearTimeout(timeout)
-					done(new Error('Expected keep-alive signal to NOT have been sent.'))
+					clearTimeout(timeout);
+					done(new Error('Expected keep-alive signal to NOT have been sent.'));
+				};
 
-				}
-
-				timeout = setTimeout(done, 50)
-				
-			})
-
-		})
+				timeout = setTimeout(done, 50);
+			});
+		});
 
 		describe('After the database connection has been re-established', function() {
 
@@ -333,62 +304,53 @@ describe('MySQLConnectionManager#', function() {
 				maxReconnectAttempts: 5,
 				keepAlive: true,
 				keepAliveInterval: 15
-			}
+			};
 
-			var manager
+			var manager;
 
 			before(function(done) {
 
-				manager = new MySQLConnectionManager(options)
+				manager = new MySQLConnectionManager(options);
 
 				manager.once('connect', function() {
 
-					done()
-
-				})
-
-			})
+					done();
+				});
+			});
 
 			before(function(done) {
 
 				manager.once('reconnect', function() {
 
-					done()
+					done();
+				});
 
-				})
-
-				manager.connection.destroy()
-				manager.connection.emit('error', {code: 'PROTOCOL_CONNECTION_LOST'})
-
-			})
+				manager.connection.destroy();
+				manager.connection.emit('error', { code: 'PROTOCOL_CONNECTION_LOST' });
+			});
 
 			it('should send keep-alive signals', function(done) {
 
-				var timeout, called = false
+				var timeout;
+				var called = false;
 
 				// Override the keepAlive method.
 				manager.keepAlive = function() {
 
-					clearTimeout(timeout)
+					clearTimeout(timeout);
 
-					if (!called)
-					{
-						called = true
-						done()
+					if (!called) {
+						called = true;
+						done();
 					}
-
-				}
+				};
 
 				timeout = setTimeout(function() {
 
-					done(new Error('Expected at least one keep-alive signal to have been sent.'))
+					done(new Error('Expected at least one keep-alive signal to have been sent.'));
 
-				}, 60)
-
-			})
-
-		})
-
-	})
-
-})
+				}, 60);
+			});
+		});
+	});
+});

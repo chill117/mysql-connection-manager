@@ -1,6 +1,6 @@
-var MySQLConnectionManager = require('../..')
+var MySQLConnectionManager = require('../..');
 
-var config = require('../config/database')
+var config = require('../config/database');
 
 describe('MySQLConnectionManager#', function() {
 
@@ -17,41 +17,30 @@ describe('MySQLConnectionManager#', function() {
 				useConnectionPooling: true,
 				keepAlive: true,
 				keepAliveInterval: 2000
-			}
+			};
 
-			var manager
+			var manager;
 
 			before(function() {
 
-				manager = new MySQLConnectionManager(options)
-
-			})
+				manager = new MySQLConnectionManager(options);
+			});
 
 			it('should be able to query a connection from the connection pool', function(done) {
 
 				manager.connection.getConnection(function(error, connection) {
 
-					if (error)
-						return done(new Error('An unexpected error occurred'))
+					if (error) {
+						return done(new Error('An unexpected error occurred'));
+					}
 
-					if (!connection || !connection.query)
-						return done(new Error('Expected a valid connection object'))
+					if (!connection || !connection.query) {
+						return done(new Error('Expected a valid connection object'));
+					}
 
-					connection.query('SHOW TABLES', function(error, result) {
-
-						if (error)
-							return done(new Error('Failed to query the connection'))
-
-						done()
-
-					})
-
-				})
-
-			})
-
-		})
-
-	})
-
-})
+					connection.query('SHOW TABLES', done);
+				});
+			});
+		});
+	});
+});

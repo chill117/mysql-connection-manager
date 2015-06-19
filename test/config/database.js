@@ -4,4 +4,4 @@ module.exports = {
 	user: process.env.DB_USER !== undefined ? process.env.DB_USER : 'connect_mng_test',
 	password: process.env.DB_PASS !== undefined ? process.env.DB_PASS : 'password',
 	database: process.env.DB_NAME !== undefined ? process.env.DB_NAME : 'connect_mng_test'
-}
+};

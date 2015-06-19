@@ -1,6 +1,6 @@
-var MySQLConnectionManager = require('../..')
+var MySQLConnectionManager = require('../..');
 
-var config = require('../config/database')
+var config = require('../config/database');
 
 describe('MySQLConnectionManager#', function() {
 
@@ -21,44 +21,38 @@ describe('MySQLConnectionManager#', function() {
 					useConnectionPooling: false,
 					reconnectDelayGroupSize: 3,
 					maxReconnectAttempts: 11
-				}
+				};
 
-				var manager
+				var manager;
 
 				before(function(done) {
 
-					manager = new MySQLConnectionManager(options)
+					manager = new MySQLConnectionManager(options);
 
 					manager.once('connect', function() {
 
-						done()
-
-					})
-
-				})
+						done();
+					});
+				});
 
 				it('should not attempt to reconnect', function(done) {
 
-					var timeout
+					var timeout;
 
 					// Override the reconnect method.
 					manager.reconnect = function() {
 
-						clearTimeout(timeout)
-						done(new Error('Expected no reconnection attempts.'))
+						clearTimeout(timeout);
+						done(new Error('Expected no reconnection attempts.'));
+					};
 
-					}
+					timeout = setTimeout(done, 50);
 
-					timeout = setTimeout(done, 50)
-
-					manager.connection.destroy()
-					manager.connection.emit('error', {code: 'PROTOCOL_CONNECTION_LOST'})
-
-				})
-
-			})
-
-		})
+					manager.connection.destroy();
+					manager.connection.emit('error', { code: 'PROTOCOL_CONNECTION_LOST' });
+				});
+			});
+		});
 
 		describe('is set to TRUE', function() {
 
@@ -75,39 +69,35 @@ describe('MySQLConnectionManager#', function() {
 					useConnectionPooling: false,
 					reconnectDelayGroupSize: 3,
 					maxReconnectAttempts: 11
-				}
+				};
 
-				var manager
+				var manager;
 
 				before(function(done) {
 
-					manager = new MySQLConnectionManager(options)
+					manager = new MySQLConnectionManager(options);
 
 					manager.once('connect', function() {
 
-						done()
+						done();
 
-					})
-
-				})
+					});
+				});
 
 				it('should not attempt to reconnect', function(done) {
 
-					var timeout
+					var timeout;
 
 					// Override the reconnect method.
 					manager.reconnect = function() {
 
-						clearTimeout(timeout)
-						done(new Error('Expected no reconnection attempts.'))
+						clearTimeout(timeout);
+						done(new Error('Expected no reconnection attempts.'));
+					};
 
-					}
-
-					timeout = setTimeout(done, 50)
-
-				})
-
-			})
+					timeout = setTimeout(done, 50);
+				});
+			});
 
 			describe('and the MySQL connection has been lost', function() {
 
@@ -122,53 +112,48 @@ describe('MySQLConnectionManager#', function() {
 					useConnectionPooling: false,
 					reconnectDelayGroupSize: 3,
 					maxReconnectAttempts: 7
-				}
+				};
 
-				var manager
+				var manager;
 
 				before(function(done) {
 
-					manager = new MySQLConnectionManager(options)
+					manager = new MySQLConnectionManager(options);
 
 					manager.once('connect', function() {
 
-						done()
-
-					})
-
-				})
+						done();
+					});
+				});
 
 				it('should attempt to reconnect', function(done) {
 
-					var timeout, called = false
+					var timeout;
+					var called = false;
 
 					// Override the reconnect method.
 					manager.reconnect = function() {
 
-						clearTimeout(timeout)
+						clearTimeout(timeout);
 
-						if (!called)
-						{
-							called = true
-							done()
+						if (!called) {
+							called = true;
+							done();
 						}
-
-					}
+					};
 
 					timeout = setTimeout(function() {
 
-						done(new Error('Expected at least one reconnection attempt.'))
+						done(new Error('Expected at least one reconnection attempt.'));
 
-					}, 80)
+					}, 80);
 
-					manager.connection.destroy()
-					manager.connection.emit('error', {code: 'PROTOCOL_CONNECTION_LOST'})
+					manager.connection.destroy();
+					manager.connection.emit('error', { code: 'PROTOCOL_CONNECTION_LOST' });
 
-				})
-
-			})
-
-		})
+				});
+			});
+		});
 
 		describe('options: \'reconnectDelay\', \'reconnectDelayGroupSize\'', function() {
 
@@ -183,111 +168,107 @@ describe('MySQLConnectionManager#', function() {
 				useConnectionPooling: false,
 				reconnectDelayGroupSize: 3,
 				maxReconnectAttempts: 7
-			}
+			};
 
-			var manager
+			var manager;
 
 			before(function(done) {
 
-				manager = new MySQLConnectionManager(options)
+				manager = new MySQLConnectionManager(options);
 
 				manager.once('connect', function() {
 
-					done()
-
-				})
-
-			})
+					done();
+				});
+			});
 
 			it('should wait for the correct amount of time before each reconnection attempt', function(done) {
 
-				var numAttempts = 0, testTime = 0, expectedTestTime = getExpectedTestTime()
-
-				var originalReconnect = manager.reconnect
+				var numAttempts = 0;
+				var testTime = 0;
+				var expectedTestTime = getExpectedTestTime();
+				var originalReconnect = manager.reconnect;
 
 				// Override the internal reconnect method.
 				manager.reconnect = function() {
 
-					numAttempts++
+					numAttempts++;
 
-					originalReconnect.call(manager)
-
-				}
+					originalReconnect.call(manager);
+				};
 
 				// Override the connect method, to prevent the connection from being re-established.
 				manager.connect = function(cb) {
 
-					cb('Some error..')
+					cb('Some error..');
+				};
 
-				}
+				var intervalCheck = 0;
+				var intervalTime = expectedTestTime / 2;
 
-				var intervalCheck = 0, intervalTime = expectedTestTime / 2
-
-				setTimeout(checkNumAttempts, intervalTime)
+				setTimeout(checkNumAttempts, intervalTime);
 
 				function checkNumAttempts() {
 
-					intervalCheck++
+					intervalCheck++;
 
-					var elapsedTime = intervalTime * intervalCheck
-					var numAttemptsExpected = getExpectedNumberOfAttempts(elapsedTime)
+					var elapsedTime = intervalTime * intervalCheck;
+					var numAttemptsExpected = getExpectedNumberOfAttempts(elapsedTime);
 
-					if (numAttempts != numAttemptsExpected)
-						return done(new Error('Expected exactly ' + numAttemptsExpected + ' reconnection attempts.'))
+					if (numAttempts != numAttemptsExpected) {
+						return done(new Error('Expected exactly ' + numAttemptsExpected + ' reconnection attempts.'));
+					}
 
-					if (elapsedTime >= expectedTestTime)
-						return done()
+					if (elapsedTime >= expectedTestTime) {
+						return done();
+					}
 
-					setTimeout(checkNumAttempts, intervalTime)
-
+					setTimeout(checkNumAttempts, intervalTime);
 				}
 
 				function getExpectedNumberOfAttempts(elapsedTime) {
 
-					var expectedTestTime = 0, expectedNumberOfAttempts = 0
+					var expectedTestTime = 0;
+					var expectedNumberOfAttempts = 0;
 
-					for (var n = 1; n < options.maxReconnectAttempts; n++)
-					{
-						expectedTestTime += getExpectedDelay(n)
+					for (var n = 1; n < options.maxReconnectAttempts; n++) {
 
-						if (elapsedTime - expectedTestTime < 10)
-							break
+						expectedTestTime += getExpectedDelay(n);
 
-						expectedNumberOfAttempts++
+						if (elapsedTime - expectedTestTime < 10) {
+							break;
+						}
+
+						expectedNumberOfAttempts++;
 					}
 
-					return expectedNumberOfAttempts
-
+					return expectedNumberOfAttempts;
 				}
 
 				function getExpectedDelay(attemptNumber) {
 
-					var numGroups = options.reconnectDelay.length
-					var groupIndex = Math.floor(attemptNumber / options.reconnectDelayGroupSize)
+					var numGroups = options.reconnectDelay.length;
+					var groupIndex = Math.floor(attemptNumber / options.reconnectDelayGroupSize);
 
-					return options.reconnectDelay[groupIndex] || options.reconnectDelay[numGroups - 1]
-
+					return options.reconnectDelay[groupIndex] || options.reconnectDelay[numGroups - 1];
 				}
 
 				function getExpectedTestTime() {
 
-					var expectedTestTime = 0
+					var expectedTestTime = 0;
 
-					for (var n = 1; n <= options.maxReconnectAttempts; n++)
-						expectedTestTime += getExpectedDelay(n)
+					for (var n = 1; n <= options.maxReconnectAttempts; n++) {
+						expectedTestTime += getExpectedDelay(n);
+					}
 
-					return expectedTestTime
-
+					return expectedTestTime;
 				}
 
-				manager.connection.destroy()
-				manager.connection.emit('error', {code: 'PROTOCOL_CONNECTION_LOST'})
-
-			})
-
-		})
-
-	})
+				manager.connection.destroy();
+				manager.connection.emit('error', { code: 'PROTOCOL_CONNECTION_LOST' });
+			});
+		});
+	});
 
 	describe('After a reconnect', function() {
 
@@ -302,50 +283,37 @@ describe('MySQLConnectionManager#', function() {
 			useConnectionPooling: false,
 			reconnectDelayGroupSize: 3,
 			maxReconnectAttempts: 15
-		}
+		};
 
-		var manager, connection
+		var manager;
+		var connection;
 
 		beforeEach(function(done) {
 
-			manager = new MySQLConnectionManager(options)
+			manager = new MySQLConnectionManager(options);
 
-			connection = manager.connection
+			connection = manager.connection;
 
 			manager.once('connect', function() {
 
-				done()
-
-			})
-
-		})
+				done();
+			});
+		});
 
 		beforeEach(function(done) {
 
 			manager.once('reconnect', function() {
 
-				done()
+				done();
+			});
 
-			})
-
-			manager.connection.destroy()
-			manager.connection.emit('error', {code: 'PROTOCOL_CONNECTION_LOST'})
-
-		})
+			manager.connection.destroy();
+			manager.connection.emit('error', { code: 'PROTOCOL_CONNECTION_LOST' });
+		});
 
 		it('should be able to run a query on the connection object', function(done) {
 
-			connection.query('SHOW TABLES', function(error) {
-
-				if (error)
-					return done(error)
-
-				done()
-
-			})
-
-		})
-
-	})
-
-})
+			connection.query('SHOW TABLES', done);
+		});
+	});
+});

@@ -1,6 +1,6 @@
-var MySQLConnectionManager = require('../..')
+var MySQLConnectionManager = require('../..');
 
-var config = require('../config/database')
+var config = require('../config/database');
 
 describe('MySQLConnectionManager#isConnected()', function() {
 
@@ -13,32 +13,29 @@ describe('MySQLConnectionManager#isConnected()', function() {
 			password: config.password,
 			database: config.database,
 			keepAlive: false
-		}
+		};
 
-		var manager
+		var manager;
 
 		before(function(done) {
 
-			manager = new MySQLConnectionManager(options)
+			manager = new MySQLConnectionManager(options);
 
 			manager.once('connect', function() {
 
-				done()
-
-			})
-
-		})
+				done();
+			});
+		});
 
 		it('should return TRUE', function(done) {
 
-			if (!manager.isConnected())
-				return done(new Error('Expected isConnected() to return TRUE'))
+			if (!manager.isConnected()) {
+				return done(new Error('Expected isConnected() to return TRUE'));
+			}
 
-			done()
-
-		})
-
-	})
+			done();
+		});
+	});
 
 	describe('after the MySQL has disconnected', function() {
 
@@ -49,41 +46,37 @@ describe('MySQLConnectionManager#isConnected()', function() {
 			password: config.password,
 			database: config.database,
 			keepAlive: false
-		}
+		};
 
-		var manager
+		var manager;
 
 		before(function(done) {
 
-			manager = new MySQLConnectionManager(options)
+			manager = new MySQLConnectionManager(options);
 
 			manager.once('connect', function() {
 
-				done()
-
-			})
-
-		})
+				done();
+			});
+		});
 
 		before(function(done) {
 
-			manager.once('disconnect', done)
+			manager.once('disconnect', done);
 
-			manager.connection.destroy()
-			manager.connection.emit('error', {code: 'PROTOCOL_CONNECTION_LOST'})
-
-		})
+			manager.connection.destroy();
+			manager.connection.emit('error', { code: 'PROTOCOL_CONNECTION_LOST' });
+		});
 
 		it('should return FALSE', function(done) {
 
-			if (manager.isConnected())
-				return done(new Error('Expected isConnected() to return FALSE'))
+			if (manager.isConnected()) {
+				return done(new Error('Expected isConnected() to return FALSE'));
+			}
 
-			done()
-
-		})
-
-	})
+			done();
+		});
+	});
 
 	describe('after the MySQL connection has been re-established after a disconnect', function() {
 
@@ -96,44 +89,38 @@ describe('MySQLConnectionManager#isConnected()', function() {
 			autoReconnect: true,
 			reconnectDelay: 25,
 			keepAlive: false
-		}
+		};
 
-		var manager
+		var manager;
 
 		before(function(done) {
 
-			manager = new MySQLConnectionManager(options)
+			manager = new MySQLConnectionManager(options);
 
 			manager.once('connect', function() {
 
-				done()
-
-			})
-
-		})
+				done();
+			});
+		});
 
 		before(function(done) {
 
 			manager.once('reconnect', function() {
 
-				done()
+				done();
+			});
 
-			})
-
-			manager.connection.destroy()
-			manager.connection.emit('error', {code: 'PROTOCOL_CONNECTION_LOST'})
-
-		})
+			manager.connection.destroy();
+			manager.connection.emit('error', { code: 'PROTOCOL_CONNECTION_LOST' });
+		});
 
 		it('should return TRUE', function(done) {
 
-			if (!manager.isConnected())
-				return done(new Error('Expected isConnected() to return TRUE'))
+			if (!manager.isConnected()) {
+				return done(new Error('Expected isConnected() to return TRUE'));
+			}
 
-			done()
-
-		})
-
-	})
-
-})
+			done();
+		});
+	});
+});
