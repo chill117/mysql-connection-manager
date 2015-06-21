@@ -26,7 +26,7 @@ var options = {
 	user: 'db_user',
 	password: 'password',
 	database: 'db_name'
-}
+};
 
 var manager = new MySQLConnectionManager(options)
 
@@ -34,7 +34,7 @@ manager.on('connect', function(connection) {
 
 	// Connected!
 
-})
+});
 
 // Pass the connection object to some other module, like this:
 var something = new SomeThing(someOtherOptions, manager.connection)
@@ -43,8 +43,8 @@ The connection object is the same as provided by [node-mysql](https://github.com
 
 You can also pass an already existing [node-mysql](https://github.com/felixge/node-mysql) connection object to `mysql-connection-manager`, like this:
 ```js
-var mysql = require('mysql')
-var MySQLConnectionManager = require('mysql-connection-manager')
+var mysql = require('mysql');
+var MySQLConnectionManager = require('mysql-connection-manager');
 
 var options = {
 	host: 'localhost',
@@ -52,15 +52,15 @@ var options = {
 	user: 'db_user',
 	password: 'password',
 	database: 'db_name'
-}
+};
 
-var connection = mysql.createConnection(options)
-var manager = new MySQLConnectionManager(options, connection)
+var connection = mysql.createConnection(options);
+var manager = new MySQLConnectionManager(options, connection);
 ```
 
 To cleanly end the current connection:
 ```js
-manager.endConnection()
+manager.endConnection();
 ```
 
 
@@ -72,19 +72,19 @@ manager.on('connect', function(connection) {
 
 	// A database connection has been established..
 
-})
+});
 
 manager.on('reconnect', function(connection) {
 
 	// The database connection has been re-established..
 
-})
+});
 
 manager.on('disconnect', function() {
 
 	// The database connection has been lost..
 
-})
+});
 ```
 The `manager` object is extended with the [nodejs EventEmitter](http://nodejs.org/api/events.html), so you can use all of the methods that it provides as well: `on`, `off`, `once`, `emit`, etc.
 
@@ -111,8 +111,8 @@ var options = {
 	reconnectDelayGroupSize: 5,// Number of reconnection attempts per reconnect delay value.
 	maxReconnectAttempts: 25,// Maximum number of reconnection attempts. Set to 0 for unlimited.
 	keepAlive: true,// Whether or not to send keep-alive pings on the database connection(s).
-	keepAliveInterval: 30000,// How frequently keep-alive pings will be sent; milliseconds.
-}
+	keepAliveInterval: 30000// How frequently keep-alive pings will be sent; milliseconds.
+};
 ```
 
 #### Reconnect Delays
@@ -139,7 +139,7 @@ Alternatively you may supply a single integer value to the `reconnectDelay` opti
 ```js
 var options = {
 	reconnectDelay: 500
-}
+};
 ```
 
 
@@ -197,7 +197,7 @@ Now, you'll need to set up a local test database:
 	user: 'connect_mng_test',
 	password: 'password',
 	database: 'connect_mng_test'
-}
+};
 ```
 *These database credentials are located at `test/config/database.js`*
 
