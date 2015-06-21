@@ -37,7 +37,7 @@ manager.on('connect', function(connection) {
 });
 
 // Pass the connection object to some other module, like this:
-var something = new SomeThing(someOtherOptions, manager.connection)
+var something = new SomeThing(someOtherOptions, manager.connection);
 ```
 The connection object is the same as provided by [node-mysql](https://github.com/felixge/node-mysql).
 
