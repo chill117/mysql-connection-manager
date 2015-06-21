@@ -18,7 +18,7 @@ This will install `mysql-connection-manager` and add it to your application's `p
 
 To have `mysql-connection-manager` create the connection for you:
 ```js
-var MySQLConnectionManager = require('mysql-connection-manager')
+var MySQLConnectionManager = require('mysql-connection-manager');
 
 var options = {
 	host: 'localhost',
@@ -28,7 +28,7 @@ var options = {
 	database: 'db_name'
 };
 
-var manager = new MySQLConnectionManager(options)
+var manager = new MySQLConnectionManager(options);
 
 manager.on('connect', function(connection) {
 
