@@ -1,3 +1,5 @@
+'use strict';
+
 var MySQLConnectionManager = require('../..');
 
 var config = require('../config/database');
