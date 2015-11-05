@@ -1,7 +1,7 @@
 {
 	"name": "mysql-connection-manager",
 	"description": "Manages keep-alive signals, reconnections for a MySQL connection or connection pool.",
-	"version": "0.0.10",
+	"version": "0.0.11",
 	"main": "index.js",
 	"scripts": {
 		"test": "grunt test"
@@ -20,13 +20,13 @@
 	},
 	"dependencies": {
 		"debug": "2.2.0",
-		"mysql": "2.7.0"
+		"mysql": "2.9.0"
 	},
 	"devDependencies": {
 		"grunt": "0.4.5",
-		"grunt-jscs": "1.8.0",
+		"grunt-jscs": "2.3.0",
 		"grunt-mocha-test": "0.12.7",
-		"mocha": "2.2.5"
+		"mocha": "2.3.3"
 	},
 	"readmeFilename": "readme.md",
 	"bugs": {
