@@ -1,8 +1,8 @@
 # mysql-connection-manager
 
-[![Build Status](https://travis-ci.org/chill117/mysql-connection-manager.svg?branch=master)](https://travis-ci.org/chill117/mysql-connection-manager) [![Status of Dependencies](https://david-dm.org/chill117/mysql-connection-manager.svg)](https://david-dm.org/chill117/mysql-connection-manager)
-
 Manages keep-alive signals, reconnections for a MySQL connection or connection pool.
+
+[![Build Status](https://travis-ci.org/chill117/mysql-connection-manager.svg?branch=master)](https://travis-ci.org/chill117/mysql-connection-manager) [![Status of Dependencies](https://david-dm.org/chill117/mysql-connection-manager.svg)](https://david-dm.org/chill117/mysql-connection-manager)
 
 
 ## Installation
@@ -208,4 +208,3 @@ With your local environment configured, running tests is as simple as:
 ```
 npm test
 ```
-This module supports node.js `0.8.x` and `0.10.x`. If you are planning to contribute, please test your changes against all supported versions of node. If you need help setting up multiple versions of node in your development environment, [this article](https://degreesofzero.com/article/how-to-install-multiple-versions-of-nodejs.html) can guide you through the process.
