@@ -355,4 +355,33 @@ describe('MySQLConnectionManager#', function() {
 			});
 		});
 	});
+
+	it('keep-alive error case', function(done) {
+
+		var options = {
+			host: config.host,
+			port: config.port,
+			user: config.user,
+			password: config.password,
+			database: config.database,
+			autoReconnect: false,
+			useConnectionPooling: false,
+			keepAlive: true,
+			keepAliveInterval: 15
+		};
+
+		var manager = new MySQLConnectionManager(options);
+
+		manager.keepAlive = function(cb) {
+
+			var error = new Error('Some error.');
+			error.fatal = true;
+			cb(error);
+		};
+
+		manager.once('disconnect', function() {
+
+			done();
+		});
+	});
 });
