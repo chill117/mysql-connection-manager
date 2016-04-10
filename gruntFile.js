@@ -31,5 +31,5 @@ module.exports = function(grunt) {
 
 	grunt.initConfig(config);
 
-	grunt.registerTask('test', [ 'jscs', 'mochaTest' ]);
+	grunt.registerTask('test', [ 'mochaTest', 'jscs' ]);
 };
