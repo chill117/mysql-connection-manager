@@ -63,32 +63,6 @@ To cleanly end the current connection:
 manager.endConnection();
 ```
 
-
-### Events
-
-There are a few events that can be listened for on the `manager` object:
-```js
-manager.on('connect', function(connection) {
-
-	// A database connection has been established..
-
-});
-
-manager.on('reconnect', function(connection) {
-
-	// The database connection has been re-established..
-
-});
-
-manager.on('disconnect', function() {
-
-	// The database connection has been lost..
-
-});
-```
-The `manager` object is extended with the [nodejs EventEmitter](http://nodejs.org/api/events.html), so you can use all of the methods that it provides as well: `on`, `off`, `once`, `emit`, etc.
-
-
 ### Options
 
 A list of all available options:
@@ -114,6 +88,30 @@ var options = {
 	keepAliveInterval: 30000// How frequently keep-alive pings will be sent; milliseconds.
 };
 ```
+
+
+#### Connection Pooling
+
+When `useConnectionPooling` is set to `true`, the `manager.connection` object is a connection pool object returned by `mysql.createPool`; see [node-mysql](https://github.com/felixge/node-mysql#pooling-connections) for details.
+
+
+#### SSL
+
+Provide your SSL configuration options as you would when using the node-mysql module directly. Here's an example:
+```js
+var MySQLConnectionManager = require('mysql-connection-manager');
+
+var options = {
+    ssl: {
+        cert : fs.readFileSync( '/path/to/server-cert.pem'),
+        key : fs.readFileSync( '/path/to/server-key.pem')
+    }
+};
+
+var manager = new MySQLConnectionManager(options);
+```
+For more details on SSL options, see [node-mysql](https://github.com/felixge/node-mysql#ssl-options).
+
 
 #### Reconnect Delays
 
@@ -143,9 +141,30 @@ var options = {
 ```
 
 
-### Connection Pooling
 
-When `useConnectionPooling` is set to `TRUE`, the `manager.connection` object is a connection pool object returned by `mysql.createPool`; see [node-mysql](https://github.com/felixge/node-mysql#pooling-connections) for details.
+### Events
+
+There are a few events that can be listened for on the `manager` object:
+```js
+manager.on('connect', function(connection) {
+
+	// A database connection has been established..
+
+});
+
+manager.on('reconnect', function(connection) {
+
+	// The database connection has been re-established..
+
+});
+
+manager.on('disconnect', function() {
+
+	// The database connection has been lost..
+
+});
+```
+The `manager` object is extended with the [nodejs EventEmitter](http://nodejs.org/api/events.html), so you can use all of the methods that it provides as well: `on`, `off`, `once`, `emit`, etc.
 
 
 ### Debugging
