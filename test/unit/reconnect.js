@@ -187,7 +187,6 @@ describe('MySQLConnectionManager#', function() {
 			it('should wait for the correct amount of time before each reconnection attempt', function(done) {
 
 				var numAttempts = 0;
-				var testTime = 0;
 				var expectedTestTime = getExpectedTestTime();
 				var originalReconnect = manager.reconnect;
 
