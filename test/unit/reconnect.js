@@ -51,7 +51,7 @@ describe('MySQLConnectionManager#', function() {
 					timeout = setTimeout(done, 50);
 
 					manager.connection.destroy();
-					manager.connection.emit('error', { code: 'PROTOCOL_CONNECTION_LOST' });
+					manager.connection.emit('error', { code: 'PROTOCOL_CONNECTION_LOST', fatal: true });
 				});
 			});
 		});
@@ -151,7 +151,7 @@ describe('MySQLConnectionManager#', function() {
 					}, 80);
 
 					manager.connection.destroy();
-					manager.connection.emit('error', { code: 'PROTOCOL_CONNECTION_LOST' });
+					manager.connection.emit('error', { code: 'PROTOCOL_CONNECTION_LOST', fatal: true });
 
 				});
 			});
@@ -266,7 +266,7 @@ describe('MySQLConnectionManager#', function() {
 				}
 
 				manager.connection.destroy();
-				manager.connection.emit('error', { code: 'PROTOCOL_CONNECTION_LOST' });
+				manager.connection.emit('error', { code: 'PROTOCOL_CONNECTION_LOST', fatal: true });
 			});
 		});
 	});
@@ -309,7 +309,7 @@ describe('MySQLConnectionManager#', function() {
 			});
 
 			manager.connection.destroy();
-			manager.connection.emit('error', { code: 'PROTOCOL_CONNECTION_LOST' });
+			manager.connection.emit('error', { code: 'PROTOCOL_CONNECTION_LOST', fatal: true });
 		});
 
 		it('should be able to run a query on the connection object', function(done) {

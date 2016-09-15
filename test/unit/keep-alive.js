@@ -273,7 +273,7 @@ describe('MySQLConnectionManager#', function() {
 				});
 
 				manager.connection.destroy();
-				manager.connection.emit('error', { code: 'PROTOCOL_CONNECTION_LOST' });
+				manager.connection.emit('error', { code: 'PROTOCOL_CONNECTION_LOST', fatal: true });
 			});
 
 			it('should not send keep-alive signals', function(done) {
@@ -328,7 +328,7 @@ describe('MySQLConnectionManager#', function() {
 				});
 
 				manager.connection.destroy();
-				manager.connection.emit('error', { code: 'PROTOCOL_CONNECTION_LOST' });
+				manager.connection.emit('error', { code: 'PROTOCOL_CONNECTION_LOST', fatal: true });
 			});
 
 			it('should send keep-alive signals', function(done) {
